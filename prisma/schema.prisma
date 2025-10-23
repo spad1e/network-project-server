@@ -1,0 +1,41 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id])
+  message   String
+  createdAt DateTime @default(now())
+  userId    String?
+  User      User?    @relation(fields: [userId], references: [id])
+
+  @@index([groupId])
+}
+
+model User {
+  id       String  @id @default(uuid())
+  username String  @unique
+  password String
+  chat     Chat[]
+  groups   Group[]
+  adminOf  Group[] @relation("admin")
+}
+
+model Group {
+  id        String   @id @default(uuid())
+  name      String
+  adminId   String
+  admin     User     @relation("admin", fields: [adminId], references: [id])
+  members   User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  Chat      Chat[]
+}
