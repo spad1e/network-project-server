@@ -1,0 +1,138 @@
+import { GroupService } from "@/services/group.service";
+import { StatusCodes } from "http-status-codes";
+import { AppError } from "@/types/error";
+import type { Request, Response } from "express";
+import type { IGroup } from "@/types/group";
+
+export class GroupController {
+  private groupService: GroupService;
+
+  constructor() {
+    this.groupService = new GroupService();
+  }
+
+  async createGroup(req: Request, res: Response): Promise<void> {
+    try {
+      const { name, adminUsername } = req.body;
+      const createdGroup = await this.groupService.createGroup({
+        name,
+        adminUsername,
+      } as IGroup);
+      res.status(StatusCodes.CREATED).json(createdGroup);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  async getAllGroups(req: Request, res: Response): Promise<void> {
+    try {
+      const groups = await this.groupService.getGroups();
+      res.status(StatusCodes.OK).json(groups);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  async getGroupById(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const group = await this.groupService.getGroupById(id);
+      res.status(StatusCodes.OK).json(group);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  async getGroupsByUsername(req: Request, res: Response): Promise<void> {
+    try {
+      const { username } = req.params;
+      const groups = await this.groupService.getGroupsByUsername(username);
+      res.status(StatusCodes.OK).json(groups);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  async updateGroupById(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const updatedGroup = await this.groupService.updateGroupById(
+        id,
+        req.body as IGroup
+      );
+      res.status(StatusCodes.OK).json(updatedGroup);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  async deleteGroupById(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const deletedGroup = await this.groupService.deleteGroupById(id);
+      res.status(StatusCodes.OK).json(deletedGroup);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+}
