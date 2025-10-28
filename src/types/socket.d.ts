@@ -1,10 +1,11 @@
 export interface ServerToClientEvents {
-  receive_message: (data: string) => void;
+  messageToClient: (data: IChat) => void;
 }
 
 export interface ClientToServerEvents {
-  join_group: (id: number) => void;
-  send_message: (data: string, room: number) => void;
+  join_group: (id: string) => void;
+  leave_group: (id: string) => void;
+  messageToServer: (data: IChat, room: string) => void;
 }
 
 export interface InterServerEvents {}
