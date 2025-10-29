@@ -1,29 +1,56 @@
-// import bcrypt from "bcrypt";
-// import { AuthRepository } from "@/repositories/auth.repository";
-// import { StatusCodes } from "http-status-codes";
+import bcrypt from "bcrypt";
+import { AuthRepository } from "@/repositories/auth.repository";
+import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken";
 
-// import { AppError } from "@/types/error";
+import { AppError } from "@/types/error";
 
-// export class AuthService {
-//   private authRepository: AuthRepository;
+import { IUser } from "@/types/user";
 
-//   constructor() {
-//     this.authRepository = new AuthRepository();
-//   }
 
-//   async signIn(username: string, password: string) {
-//     const user = await this.authRepository.findUserByUsername(username);
-//     if (!user) {
-//       throw new AppError("User not found", StatusCodes.NOT_FOUND);
-//     }
+export class AuthService {
+  private authRepository: AuthRepository;
 
-//     const isMatch = password === user.password;
-//     if (!isMatch) {
-//       throw new AppError("Invalid credentials", StatusCodes.UNAUTHORIZED);
-//     }
+  constructor() {
+    this.authRepository = new AuthRepository();
+  }
 
-//     return user;
-//   }
+  async signIn(body: IUser) {
+    if (!body.username || !body.password) {
+      throw new AppError("No Username or password", StatusCodes.BAD_REQUEST);
+    }
 
-//   async signUp(username: string, password: string) {}
-// }
+    const user = await this.authRepository.findUserByUsername(body.username);
+    if (!user) {
+      throw new AppError("User not found", StatusCodes.NOT_FOUND);
+    }
+
+    const isMatch = body.password === user.password;
+    if (!isMatch) {
+      throw new AppError("Invalid credentials", StatusCodes.UNAUTHORIZED);
+    }
+
+    const payload = {user};
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET!, {
+      expiresIn: "24h"
+    })
+    return { user, token };
+  }
+
+  async signUp(body: IUser) {
+    if (!body.username || !body.password) {
+      throw new AppError("No Username or password", StatusCodes.BAD_REQUEST);
+    }
+    const existingUser = await this.authRepository.findUserByUsername(body.username);
+    if (existingUser) {
+      throw new AppError("This Account Already exist", StatusCodes.CONFLICT);
+    }
+    const createUser = await this.authRepository.createUser(body);
+    if(!createUser) {
+      throw new AppError("Internal Server Error", StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+    return createUser;
+
+  }
+}

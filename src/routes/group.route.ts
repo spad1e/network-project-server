@@ -1,11 +1,14 @@
 import { BaseRouter } from "@/routes/baseRouter";
 import { GroupController } from "@/controllers/group.controller";
+import { authMiddleware } from "@/middleware/auth.middleware";
 
 export class GroupRouter extends BaseRouter {
   private groupController: GroupController;
 
   constructor() {
-    super();
+    super({
+      middleware: [authMiddleware],
+    });
     this.groupController = new GroupController();
 
     this.setUpRoutes();
@@ -16,12 +19,12 @@ export class GroupRouter extends BaseRouter {
       "/",
       this.groupController.getAllGroups.bind(this.groupController)
     );
+    // this.router.get(
+    //   "/:id",
+    //   this.groupController.getGroupById.bind(this.groupController)
+    // );
     this.router.get(
-      "/:id",
-      this.groupController.getGroupById.bind(this.groupController)
-    );
-    this.router.get(
-      "/user/:username",
+      "/user",
       this.groupController.getGroupsByUsername.bind(this.groupController)
     );
     this.router.post(

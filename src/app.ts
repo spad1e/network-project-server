@@ -5,6 +5,7 @@ import express, { type Express } from "express";
 import { StatusCodes } from "http-status-codes";
 import { RouterManager } from "@/routes";
 import { corsOptions } from "@/cors";
+import cookieParser from "cookie-parser";
 
 const app: Express = express();
 
@@ -14,7 +15,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors(corsOptions));
-// app.use(cookieParser());
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 const routerManager = new RouterManager();

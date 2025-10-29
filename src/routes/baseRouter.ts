@@ -1,13 +1,14 @@
 import { Router, Request, Response, NextFunction } from "express";
 
+interface BaseRouterProps {
+  middleware?: Array<(req: Request, res: Response, next: NextFunction) => void>;
+}
+
 export class BaseRouter {
   public router: Router;
-
-  constructor(
-    middleware?: Array<
-      (req: Request, res: Response, next: NextFunction) => void
-    >
-  ) {
+  constructor({
+    middleware
+  }: BaseRouterProps) {
     this.router = Router();
 
     if (middleware) {

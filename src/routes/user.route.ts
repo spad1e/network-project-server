@@ -1,17 +1,22 @@
 import { BaseRouter } from "@/routes/baseRouter";
 import { UserController } from "@/controllers/user.controller";
+import { authMiddleware } from "@/middleware/auth.middleware";
 
 export class UserRouter extends BaseRouter {
   private userController: UserController;
 
   constructor() {
-    super();
+    super({ middleware: [authMiddleware] });
     this.userController = new UserController();
 
     this.setUpRoutes();
   }
 
   private setUpRoutes(): void {
+    this.router.get(
+      "/token",
+      this.userController.getTokenUser.bind(this.userController)
+    );
     this.router.get(
       "/",
       this.userController.getAllUsers.bind(this.userController)

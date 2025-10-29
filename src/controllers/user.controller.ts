@@ -157,4 +157,30 @@ export class UserController {
       }
     }
   }
+  async getTokenUser(req: Request, res: Response): Promise<void> {
+    try {
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const username = req.user.username;
+      const user = await this.userService.getUserByUsername(username);
+      res.status(StatusCodes.OK).json(user);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
 }

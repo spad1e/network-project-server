@@ -1,11 +1,16 @@
 import { BaseRouter } from "@/routes/baseRouter";
 import { ChatController } from "@/controllers/chat.controller";
+import { authMiddleware } from "@/middleware/auth.middleware";
+
 
 export class ChatRouter extends BaseRouter {
   private chatController: ChatController;
 
   constructor() {
-    super();
+    super({
+      middleware: []
+    });
+    
     this.chatController = new ChatController();
 
     this.setUpRoutes();

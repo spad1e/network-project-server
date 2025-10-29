@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { AppError } from "@/types/error";
 import type { Request, Response } from "express";
 import type { IGroup } from "@/types/group";
+import { IUser } from "@/types/user";
 
 export class GroupController {
   private groupService: GroupService;
@@ -13,7 +14,16 @@ export class GroupController {
 
   async createGroup(req: Request, res: Response): Promise<void> {
     try {
-      const { name, adminUsername } = req.body;
+      const { name } = req.body;
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+
+      const adminUsername = req.user.username;
       const createdGroup = await this.groupService.createGroup({
         name,
         adminUsername,
@@ -75,7 +85,16 @@ export class GroupController {
 
   async getGroupsByUsername(req: Request, res: Response): Promise<void> {
     try {
-      const { username } = req.params;
+      console.log("what");
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const username  = req.user.username;
+      console.log(username)
       const groups = await this.groupService.getGroupsByUsername(username);
       res.status(StatusCodes.OK).json(groups);
     } catch (error: unknown) {
