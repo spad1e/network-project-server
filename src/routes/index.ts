@@ -22,7 +22,6 @@ export class RouterManager {
     this.router.use("/api/user", userRouter.getRouter());
     this.router.use("/api/chat", chatRouter.getRouter());
     this.router.use("/api/auth", authRouter.getRouter());
-    
   }
 
   public getRouter(): Router {

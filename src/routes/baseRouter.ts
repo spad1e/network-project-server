@@ -6,9 +6,7 @@ interface BaseRouterProps {
 
 export class BaseRouter {
   public router: Router;
-  constructor({
-    middleware
-  }: BaseRouterProps) {
+  constructor({ middleware }: BaseRouterProps) {
     this.router = Router();
 
     if (middleware) {

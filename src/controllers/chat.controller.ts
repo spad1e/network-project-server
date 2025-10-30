@@ -14,7 +14,7 @@ export class ChatController {
   async createChat(req: Request, res: Response): Promise<void> {
     try {
       const { groupId, username, message } = req.body;
-      console.log(groupId, username, message)
+      console.log(groupId, username, message);
       const createdChat = await this.chatService.createChat({
         groupId,
         username,

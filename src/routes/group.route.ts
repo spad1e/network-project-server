@@ -17,7 +17,7 @@ export class GroupRouter extends BaseRouter {
   private setUpRoutes(): void {
     this.router.get(
       "/",
-      this.groupController.getAllGroups.bind(this.groupController)
+      this.groupController.getAllGroups.bind(this.groupController),
     );
     // this.router.get(
     //   "/:id",
@@ -25,19 +25,19 @@ export class GroupRouter extends BaseRouter {
     // );
     this.router.get(
       "/user",
-      this.groupController.getGroupsByUsername.bind(this.groupController)
+      this.groupController.getGroupsByUsername.bind(this.groupController),
     );
     this.router.post(
       "/",
-      this.groupController.createGroup.bind(this.groupController)
+      this.groupController.createGroup.bind(this.groupController),
     );
     this.router.put(
       "/:id",
-      this.groupController.updateGroupById.bind(this.groupController)
+      this.groupController.updateGroupById.bind(this.groupController),
     );
     this.router.delete(
       "/:id",
-      this.groupController.deleteGroupById.bind(this.groupController)
+      this.groupController.deleteGroupById.bind(this.groupController),
     );
   }
 }

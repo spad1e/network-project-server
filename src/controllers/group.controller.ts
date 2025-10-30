@@ -93,8 +93,8 @@ export class GroupController {
         });
         return;
       }
-      const username  = req.user.username;
-      console.log(username)
+      const username = req.user.username;
+      console.log(username);
       const groups = await this.groupService.getGroupsByUsername(username);
       res.status(StatusCodes.OK).json(groups);
     } catch (error: unknown) {
@@ -117,7 +117,7 @@ export class GroupController {
       const { id } = req.params;
       const updatedGroup = await this.groupService.updateGroupById(
         id,
-        req.body as IGroup
+        req.body as IGroup,
       );
       res.status(StatusCodes.OK).json(updatedGroup);
     } catch (error: unknown) {

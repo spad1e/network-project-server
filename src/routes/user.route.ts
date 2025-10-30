@@ -15,35 +15,35 @@ export class UserRouter extends BaseRouter {
   private setUpRoutes(): void {
     this.router.get(
       "/token",
-      this.userController.getTokenUser.bind(this.userController)
+      this.userController.getTokenUser.bind(this.userController),
     );
     this.router.get(
       "/",
-      this.userController.getAllUsers.bind(this.userController)
+      this.userController.getAllUsers.bind(this.userController),
     );
     this.router.get(
       "/:id",
-      this.userController.getUserByUsername.bind(this.userController)
+      this.userController.getUserByUsername.bind(this.userController),
     );
     this.router.post(
       "/",
-      this.userController.createUser.bind(this.userController)
+      this.userController.createUser.bind(this.userController),
     );
     this.router.put(
       "/:username",
-      this.userController.updateUserByUsername.bind(this.userController)
+      this.userController.updateUserByUsername.bind(this.userController),
     );
     this.router.delete(
       "/:username",
-      this.userController.deleteUserByUsername.bind(this.userController)
+      this.userController.deleteUserByUsername.bind(this.userController),
     );
     this.router.post(
       "/joingroup/:username",
-      this.userController.joinGroup.bind(this.userController)
+      this.userController.joinGroup.bind(this.userController),
     );
     this.router.post(
       "/leavegroup/:username",
-      this.userController.leaveGroup.bind(this.userController)
+      this.userController.leaveGroup.bind(this.userController),
     );
   }
 }

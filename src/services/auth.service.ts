@@ -7,7 +7,6 @@ import { AppError } from "@/types/error";
 
 import { IUser } from "@/types/user";
 
-
 export class AuthService {
   private authRepository: AuthRepository;
 
@@ -30,11 +29,11 @@ export class AuthService {
       throw new AppError("Invalid credentials", StatusCodes.UNAUTHORIZED);
     }
 
-    const payload = {user};
+    const payload = { user };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET!, {
-      expiresIn: "24h"
-    })
+      expiresIn: "24h",
+    });
     return { user, token };
   }
 
@@ -42,15 +41,19 @@ export class AuthService {
     if (!body.username || !body.password) {
       throw new AppError("No Username or password", StatusCodes.BAD_REQUEST);
     }
-    const existingUser = await this.authRepository.findUserByUsername(body.username);
+    const existingUser = await this.authRepository.findUserByUsername(
+      body.username,
+    );
     if (existingUser) {
       throw new AppError("This Account Already exist", StatusCodes.CONFLICT);
     }
     const createUser = await this.authRepository.createUser(body);
-    if(!createUser) {
-      throw new AppError("Internal Server Error", StatusCodes.INTERNAL_SERVER_ERROR)
+    if (!createUser) {
+      throw new AppError(
+        "Internal Server Error",
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
     }
     return createUser;
-
   }
 }

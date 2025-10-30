@@ -11,7 +11,6 @@ export class AuthController {
   }
   async signIn(req: Request, res: Response) {
     try {
-
       const data = await this.authService.signIn(req.body);
 
       res.cookie("token", data.token, {
@@ -23,7 +22,6 @@ export class AuthController {
       });
 
       return res.status(StatusCodes.OK).json(data.token);
-
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -39,23 +37,22 @@ export class AuthController {
     }
   }
   async signUp(req: Request, res: Response) {
-      try{
-          console.log("test");
-          const user = await this.authService.signUp(req.body);
-          res.status(StatusCodes.CREATED).json(user);
-          
-      } catch (error: unknown) {
-            if (error instanceof AppError) {
-              res
-                .status(error.statusCode)
-                .json({ success: false, error: error.message });
-              return;
-            } else {
-              res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                success: false,
-                message: "Internal server error",
-              });
-            }
-          }
+    try {
+      console.log("test");
+      const user = await this.authService.signUp(req.body);
+      res.status(StatusCodes.CREATED).json(user);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
     }
+  }
 }

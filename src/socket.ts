@@ -13,7 +13,7 @@ export const initSocket = (
     ServerToClientEvents,
     InterServerEvents,
     SocketData
-  >
+  >,
 ) => {
   io.on(
     "connection",
@@ -32,10 +32,10 @@ export const initSocket = (
       });
       socket.on("messageToServer", (data: IChat, room: string) => {
         console.log(
-          `Message from ${socket.id} to room ${room}: ${data.message}`
+          `Message from ${socket.id} to room ${room}: ${data.message}`,
         );
         socket.to(room).emit("messageToClient", data);
       });
-    }
+    },
   );
 };

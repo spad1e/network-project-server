@@ -1,4 +1,4 @@
-export interface IJWTData{
-    username: string;
-    password: string;
+export interface IJWTData {
+  username: string;
+  password: string;
 }
