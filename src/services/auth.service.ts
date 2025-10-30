@@ -24,7 +24,7 @@ export class AuthService {
       throw new AppError("User not found", StatusCodes.NOT_FOUND);
     }
 
-    const isMatch = body.password === user.password;
+    const isMatch = await bcrypt.compare(body.password, user.password);
     if (!isMatch) {
       throw new AppError("Invalid credentials", StatusCodes.UNAUTHORIZED);
     }
@@ -42,18 +42,27 @@ export class AuthService {
       throw new AppError("No Username or password", StatusCodes.BAD_REQUEST);
     }
     const existingUser = await this.authRepository.findUserByUsername(
-      body.username,
+      body.username
     );
     if (existingUser) {
       throw new AppError("This Account Already exist", StatusCodes.CONFLICT);
     }
-    const createUser = await this.authRepository.createUser(body);
+    const createUser = await this.authRepository.createUser({
+      username: body.username,
+      password: await this.hashPassword(body.password),
+    } as IUser);
     if (!createUser) {
       throw new AppError(
         "Internal Server Error",
-        StatusCodes.INTERNAL_SERVER_ERROR,
+        StatusCodes.INTERNAL_SERVER_ERROR
       );
     }
     return createUser;
+  }
+
+  async hashPassword(password: string): Promise<string> {
+    const saltRounds = parseInt(process.env.SALT_ROUNDS as string, 10);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
   }
 }
