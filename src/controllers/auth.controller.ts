@@ -38,7 +38,6 @@ export class AuthController {
   }
   async signUp(req: Request, res: Response) {
     try {
-      console.log("test");
       const user = await this.authService.signUp(req.body);
       res.status(StatusCodes.CREATED).json(user);
     } catch (error: unknown) {
@@ -54,5 +53,11 @@ export class AuthController {
         });
       }
     }
+  }
+  async logout(req: Request, res: Response) {
+    res.clearCookie("token");
+    res.status(StatusCodes.OK).json({
+      message: "Logged Out",
+    });
   }
 }

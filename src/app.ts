@@ -1,11 +1,10 @@
 import bodyParser from "body-parser";
-// import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { type Express } from "express";
 import { StatusCodes } from "http-status-codes";
 import { RouterManager } from "@/routes";
 import { corsOptions } from "@/cors";
-import cookieParser from "cookie-parser";
 
 const app: Express = express();
 

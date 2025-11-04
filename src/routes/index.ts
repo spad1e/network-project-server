@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { GroupRouter } from "@/routes/group.route";
 import { UserRouter } from "@/routes/user.route";
-import { ChatRouter } from "./chat.route";
-import { AuthRouter } from "./auth.route";
+import { ChatRouter } from "@/routes/chat.route";
+import { AuthRouter } from "@/routes/auth.route";
 
 export class RouterManager {
   private router: Router;

@@ -1,10 +1,9 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { IJwtData } from "@/types/auth/jwt";
-import { UserRole } from "@/types/role";
+import { IJwtData } from "@/types/jwt";
 
-export function signJwt(id: number, email: string, role: UserRole): string {
-  const payload = { id, email, role };
+export function signJwt(username: string): string {
+  const payload = { username };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
     expiresIn: "48h",
@@ -16,7 +15,6 @@ export function verifyJwt(token: string): IJwtData {
   const decoded = jwt.verify(
     token,
     process.env.JWT_SECRET as string
-  ) as unknown;
-
+  ) as JwtPayload;
   return decoded as IJwtData;
 }

@@ -3,7 +3,6 @@ import { StatusCodes } from "http-status-codes";
 import { AppError } from "@/types/error";
 import type { Request, Response } from "express";
 import type { IUser } from "@/types/user";
-import { group } from "console";
 
 export class UserController {
   private userService: UserService;
@@ -79,7 +78,7 @@ export class UserController {
       const { username } = req.params;
       const updatedUser = await this.userService.updateUserByUsername(
         username,
-        req.body as IUser,
+        req.body as IUser
       );
       res.status(StatusCodes.OK).json(updatedUser);
     } catch (error: unknown) {

@@ -1,29 +1,32 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { IJWTData } from "@/types/auth";
+import { IJwtData } from "@/types/jwt";
+import { verifyJwt } from "@/libs/jwt";
 
 declare module "express" {
   export interface Request {
-    user?: IJWTData;
+    user?: IJwtData;
   }
 }
 
 export function authMiddleware(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): void {
   const cookies = req.cookies;
-  const token = cookies?.token;
+
+  const token = cookies?.token as string | undefined;
+
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED).json({ message: "Unauthorized" });
+    return;
   }
-  try {
-    const jwtData = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
-    req.user = jwtData.user as IJWTData;
+  try {
+    const jwtData = verifyJwt(token);
+    req.user = jwtData;
     next();
   } catch {
     res.status(StatusCodes.UNAUTHORIZED).json({ message: "Unauthorized" });
