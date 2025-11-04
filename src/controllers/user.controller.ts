@@ -13,11 +13,7 @@ export class UserController {
 
   async createUser(req: Request, res: Response): Promise<void> {
     try {
-      const { username, password } = req.body;
-      const createdUser = await this.userService.createUser({
-        username,
-        password,
-      } as IUser);
+      const createdUser = await this.userService.createUser(req.body);
       res.status(StatusCodes.CREATED).json(createdUser);
     } catch (error: unknown) {
       if (error instanceof AppError) {

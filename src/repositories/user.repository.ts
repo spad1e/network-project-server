@@ -7,6 +7,7 @@ export class UserRepository {
     return await Prisma.user.create({
       data: {
         username: user.username,
+        icon_id: user.icon_id,
         password: user.password,
       },
     });
@@ -27,6 +28,7 @@ export class UserRepository {
       where: { username },
       data: {
         username: user.username,
+        icon_id: user.icon_id,
         password: user.password,
       },
     });

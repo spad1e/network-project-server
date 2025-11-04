@@ -27,6 +27,7 @@ model Chat {
 
 model User {
   username String  @id @unique
+  icon_id  Int     @default(0)
   password String
   chats    Chat[]
   groups   Group[]

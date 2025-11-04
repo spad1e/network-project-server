@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { AuthRepository } from "@/repositories/auth.repository";
+import { UserRepository } from "@/repositories/user.repository";
 import { StatusCodes } from "http-status-codes";
 
 import { AppError } from "@/types/error";
@@ -8,10 +8,10 @@ import { IUser } from "@/types/user";
 import { signJwt } from "@/libs/jwt";
 
 export class AuthService {
-  private authRepository: AuthRepository;
+  private userRepository: UserRepository;
 
   constructor() {
-    this.authRepository = new AuthRepository();
+    this.userRepository = new UserRepository();
   }
 
   async signIn(body: IUser) {
@@ -20,7 +20,7 @@ export class AuthService {
       throw new AppError("No Username or password", StatusCodes.BAD_REQUEST);
     }
 
-    const user = await this.authRepository.findUserByUsername(username);
+    const user = await this.userRepository.getUserByUsername(username);
     if (!user) {
       throw new AppError("User not found", StatusCodes.NOT_FOUND);
     }
@@ -35,16 +35,17 @@ export class AuthService {
   }
 
   async signUp(body: IUser) {
-    const { username, password } = body;
+    const { username, icon_id, password } = body;
     if (!username || !password) {
       throw new AppError("No Username or password", StatusCodes.BAD_REQUEST);
     }
-    const existingUser = await this.authRepository.findUserByUsername(username);
+    const existingUser = await this.userRepository.getUserByUsername(username);
     if (existingUser) {
       throw new AppError("This Account Already exist", StatusCodes.CONFLICT);
     }
-    const createUser = await this.authRepository.createUser({
+    const createUser = await this.userRepository.createUser({
       username: username,
+      icon_id: icon_id,
       password: await this.hashPassword(password),
     } as IUser);
     if (!createUser) {
