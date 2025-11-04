@@ -1,13 +1,20 @@
+import { IChat } from "@/types/chat";
+
 export interface ServerToClientEvents {
   messageToClient: (data: IChat) => void;
+  onlineUsers: (users: string[]) => void;
+  userConnect: (username: string) => void;
+  userDisconnect: (username: string) => void;
 }
 
 export interface ClientToServerEvents {
-  join_group: (id: string) => void;
-  leave_group: (id: string) => void;
+  joinGroup: (id: string) => void;
+  leaveGroup: (id: string) => void;
   messageToServer: (data: IChat, room: string) => void;
 }
 
 export interface InterServerEvents {}
 
-export interface SocketData {}
+export interface SocketData {
+  user: { username: string };
+}
