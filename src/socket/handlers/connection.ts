@@ -31,6 +31,7 @@ export function registerConnectionHandlers(
     onlineUsers.set(user, new Set());
   }
   onlineUsers.get(user)!.add(socket.id);
+  console.log(onlineUsers);
   io.emit("onlineUsers", Array.from(onlineUsers.keys()));
 
   socket.on("disconnect", () => {

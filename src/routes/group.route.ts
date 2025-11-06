@@ -20,12 +20,12 @@ export class GroupRouter extends BaseRouter {
       this.groupController.getGroups.bind(this.groupController)
     );
     this.router.get(
-      "/:id",
-      this.groupController.getGroupById.bind(this.groupController)
-    );
-    this.router.get(
       "/user",
       this.groupController.getGroupsByUsername.bind(this.groupController)
+    );
+    this.router.get(
+      "/:id",
+      this.groupController.getGroupById.bind(this.groupController)
     );
     this.router.post(
       "/",

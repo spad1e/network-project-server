@@ -92,7 +92,7 @@ export class GroupController {
         });
         return;
       }
-      const username = req.user.username;
+      const username = req.user!.username;
       const groups = await this.groupService.getGroupsByUsername(username);
       res.status(StatusCodes.OK).json(groups);
     } catch (error: unknown) {

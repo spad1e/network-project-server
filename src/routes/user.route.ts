@@ -32,15 +32,15 @@ export class UserRouter extends BaseRouter {
       this.userController.createUser.bind(this.userController)
     );
     this.router.put(
-      "/:username",
+      "/",
       this.userController.updateUserByUsername.bind(this.userController)
     );
     this.router.delete(
-      "/:username",
+      "/",
       this.userController.deleteUserByUsername.bind(this.userController)
     );
     this.router.post(
-      "/joingroup/:username",
+      "/joingroup",
       this.userController.joinGroup.bind(this.userController)
     );
     this.router.post(

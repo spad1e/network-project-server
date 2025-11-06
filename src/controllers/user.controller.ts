@@ -71,7 +71,14 @@ export class UserController {
 
   async updateUserByUsername(req: Request, res: Response): Promise<void> {
     try {
-      const { username } = req.params;
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const username = req.user.username;
       const updatedUser = await this.userService.updateUserByUsername(
         username,
         req.body as IUser
@@ -94,7 +101,14 @@ export class UserController {
 
   async deleteUserByUsername(req: Request, res: Response): Promise<void> {
     try {
-      const { username } = req.params;
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const username = req.user.username;
       const deletedUser = await this.userService.deleteUserByUsername(username);
       res.status(StatusCodes.OK).json(deletedUser);
     } catch (error: unknown) {
@@ -114,7 +128,14 @@ export class UserController {
 
   async joinGroup(req: Request, res: Response): Promise<void> {
     try {
-      const { username } = req.params;
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const username = req.user.username;
       const { groupId } = req.body;
       const group = await this.userService.joinGroup(username, groupId);
       res.status(StatusCodes.OK).json(group);
@@ -135,7 +156,15 @@ export class UserController {
 
   async leaveGroup(req: Request, res: Response): Promise<void> {
     try {
-      const { username, groupId } = req.params;
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const username = req.user.username;
+      const { groupId } = req.params;
       const group = await this.userService.leaveGroup(username, groupId);
       res.status(StatusCodes.OK).json(group);
     } catch (error: unknown) {
