@@ -1,34 +1,25 @@
-import { GroupService } from "@/services/group.service";
+import { GroupChatService } from "@/services/groupchat.service";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "@/types/error";
 import type { Request, Response } from "express";
-import type { IGroup } from "@/types/group";
-import { IUser } from "@/types/user";
+import { IGroupChat } from "@/types/groupchat";
 
-export class GroupController {
-  private groupService: GroupService;
+export class GroupChatController {
+  private groupChatService: GroupChatService;
 
   constructor() {
-    this.groupService = new GroupService();
+    this.groupChatService = new GroupChatService();
   }
 
-  async createGroup(req: Request, res: Response): Promise<void> {
+  async createGroupChat(req: Request, res: Response): Promise<void> {
     try {
-      const { name } = req.body;
-      if (!req.user) {
-        res.status(StatusCodes.UNAUTHORIZED).json({
-          success: false,
-          message: "User not authenticated",
-        });
-        return;
-      }
-
-      const adminUsername = req.user.username;
-      const createdGroup = await this.groupService.createGroup({
-        name,
-        adminUsername,
-      } as IGroup);
-      res.status(StatusCodes.CREATED).json(createdGroup);
+      const { groupId, username, message } = req.body;
+      const createdGroupChat = await this.groupChatService.createGroupChat({
+        groupId,
+        username,
+        message,
+      } as IGroupChat);
+      res.status(StatusCodes.CREATED).json(createdGroupChat);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -44,10 +35,10 @@ export class GroupController {
     }
   }
 
-  async getGroups(req: Request, res: Response): Promise<void> {
+  async getGroupChats(req: Request, res: Response): Promise<void> {
     try {
-      const groups = await this.groupService.getGroups();
-      res.status(StatusCodes.OK).json(groups);
+      const chats = await this.groupChatService.getGroupChats();
+      res.status(StatusCodes.OK).json(chats);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -63,11 +54,31 @@ export class GroupController {
     }
   }
 
-  async getGroupById(req: Request, res: Response): Promise<void> {
+  async getGroupChatsByGroupId(req: Request, res: Response): Promise<void> {
+    try {
+      const { groupId } = req.params;
+      const chats = await this.groupChatService.getGroupChatsByGroupId(groupId);
+      res.status(StatusCodes.OK).json(chats);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  async getGroupChatById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const group = await this.groupService.getGroupById(id);
-      res.status(StatusCodes.OK).json(group);
+      const chat = await this.groupChatService.getGroupChatById(id);
+      res.status(StatusCodes.OK).json(chat);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -83,41 +94,16 @@ export class GroupController {
     }
   }
 
-  async getGroupsByUsername(req: Request, res: Response): Promise<void> {
-    try {
-      if (!req.user) {
-        res.status(StatusCodes.UNAUTHORIZED).json({
-          success: false,
-          message: "User not authenticated",
-        });
-        return;
-      }
-      const username = req.user.username;
-      const groups = await this.groupService.getGroupsByUsername(username);
-      res.status(StatusCodes.OK).json(groups);
-    } catch (error: unknown) {
-      if (error instanceof AppError) {
-        res
-          .status(error.statusCode)
-          .json({ success: false, error: error.message });
-        return;
-      } else {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-          success: false,
-          message: "Internal server error",
-        });
-      }
-    }
-  }
-
-  async updateGroupById(req: Request, res: Response): Promise<void> {
+  async updateGroupChatById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const updatedGroup = await this.groupService.updateGroupById(
-        id,
-        req.body as IGroup
-      );
-      res.status(StatusCodes.OK).json(updatedGroup);
+      const { groupId, username, message } = req.body;
+      const updatedChat = await this.groupChatService.updateGroupChatById(id, {
+        groupId,
+        username,
+        message,
+      } as IGroupChat);
+      res.status(StatusCodes.OK).json(updatedChat);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -133,11 +119,11 @@ export class GroupController {
     }
   }
 
-  async deleteGroupById(req: Request, res: Response): Promise<void> {
+  async deleteGroupChatById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const deletedGroup = await this.groupService.deleteGroupById(id);
-      res.status(StatusCodes.OK).json(deletedGroup);
+      const deletedChat = await this.groupChatService.deleteGroupChatById(id);
+      res.status(StatusCodes.OK).json(deletedChat);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res

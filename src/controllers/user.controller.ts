@@ -30,7 +30,7 @@ export class UserController {
     }
   }
 
-  async getAllUsers(req: Request, res: Response): Promise<void> {
+  async getUsers(req: Request, res: Response): Promise<void> {
     try {
       const users = await this.userService.getUsers();
       res.status(StatusCodes.OK).json(users);

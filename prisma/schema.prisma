@@ -8,12 +8,17 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
-enum GroupType {
-  PUBLIC
-  PRIVATE
+model DirectChat {
+  id        String   @id @default(uuid())
+  sender    String
+  receiver  String
+  message   String
+  createdAt DateTime @default(now())
+  User1     User     @relation("user1", fields: [sender], references: [username])
+  User2     User     @relation("user2", fields: [receiver], references: [username])
 }
 
-model Chat {
+model GroupChat {
   id        String   @id @default(uuid())
   groupId   String
   group     Group    @relation(fields: [groupId], references: [id])
@@ -21,27 +26,26 @@ model Chat {
   createdAt DateTime @default(now())
   username  String
   User      User     @relation(fields: [username], references: [username])
-
-  @@index([groupId])
 }
 
 model User {
-  username String  @id @unique
-  icon_id  Int     @default(0)
-  password String
-  chats    Chat[]
-  groups   Group[]
-  adminOf  Group[] @relation("admin")
+  username     String       @id @unique
+  icon_id      Int          @default(0)
+  password     String
+  chats        GroupChat[]
+  groups       Group[]
+  adminOf      Group[]      @relation("admin")
+  directChats1 DirectChat[] @relation("user1")
+  directChats2 DirectChat[] @relation("user2")
 }
 
 model Group {
-  id            String    @id @default(uuid())
+  id            String      @id @default(uuid())
   name          String
   adminUsername String
-  admin         User      @relation("admin", fields: [adminUsername], references: [username])
+  admin         User        @relation("admin", fields: [adminUsername], references: [username])
   members       User[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt()
-  Chat          Chat[]
-  type          GroupType @default(PUBLIC)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt()
+  Chat          GroupChat[]
 }

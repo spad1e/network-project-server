@@ -1,25 +1,26 @@
-import { ChatService } from "@/services/chat.service";
+import { DirectChatService } from "@/services/directchat.service";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "@/types/error";
 import type { Request, Response } from "express";
-import { IChat } from "@/types/chat";
+import { IDirectChat } from "@/types/directchat";
 
-export class ChatController {
-  private chatService: ChatService;
+export class DirectChatController {
+  private directChatService: DirectChatService;
 
   constructor() {
-    this.chatService = new ChatService();
+    this.directChatService = new DirectChatService();
   }
 
-  async createChat(req: Request, res: Response): Promise<void> {
+  async createDirectChat(req: Request, res: Response): Promise<void> {
     try {
-      const { groupId, username, message } = req.body;
-      const createdChat = await this.chatService.createChat({
-        groupId,
-        username,
+      const sender = req.user!.username;
+      const { receiver, message } = req.body;
+      const createdDirectChat = await this.directChatService.createDirectChat({
+        sender,
+        receiver,
         message,
-      } as IChat);
-      res.status(StatusCodes.CREATED).json(createdChat);
+      } as IDirectChat);
+      res.status(StatusCodes.CREATED).json(createdDirectChat);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -35,10 +36,10 @@ export class ChatController {
     }
   }
 
-  async getAllChats(req: Request, res: Response): Promise<void> {
+  async getDirectChats(req: Request, res: Response): Promise<void> {
     try {
-      const chats = await this.chatService.getChats();
-      res.status(StatusCodes.OK).json(chats);
+      const directChats = await this.directChatService.getDirectChats();
+      res.status(StatusCodes.OK).json(directChats);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -54,11 +55,15 @@ export class ChatController {
     }
   }
 
-  async getChatsByGroupId(req: Request, res: Response): Promise<void> {
+  async getDirectChatByUsers(req: Request, res: Response): Promise<void> {
     try {
-      const { groupId } = req.params;
-      const chats = await this.chatService.getChatsByGroupId(groupId);
-      res.status(StatusCodes.OK).json(chats);
+      const user1 = req.user!.username;
+      const { user2 } = req.params;
+      const directChat = await this.directChatService.getDirectChatByUsers(
+        user1,
+        user2
+      );
+      res.status(StatusCodes.OK).json(directChat);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -74,36 +79,11 @@ export class ChatController {
     }
   }
 
-  async getChatById(req: Request, res: Response): Promise<void> {
-    try {
-      const { id } = req.params;
-      const chat = await this.chatService.getChatById(id);
-      res.status(StatusCodes.OK).json(chat);
-    } catch (error: unknown) {
-      if (error instanceof AppError) {
-        res
-          .status(error.statusCode)
-          .json({ success: false, error: error.message });
-        return;
-      } else {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-          success: false,
-          message: "Internal server error",
-        });
-      }
-    }
-  }
-
-  async updateChatById(req: Request, res: Response): Promise<void> {
+  async getDirectChatById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const { groupId, username, message } = req.body;
-      const updatedChat = await this.chatService.updateChatById(id, {
-        groupId,
-        username,
-        message,
-      } as IChat);
-      res.status(StatusCodes.OK).json(updatedChat);
+      const directChat = await this.directChatService.getDirectChatById(id);
+      res.status(StatusCodes.OK).json(directChat);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res
@@ -119,11 +99,38 @@ export class ChatController {
     }
   }
 
-  async deleteChatById(req: Request, res: Response): Promise<void> {
+  async updateDirectChatById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const deletedChat = await this.chatService.deleteChatById(id);
-      res.status(StatusCodes.OK).json(deletedChat);
+      const { user1, user2, message } = req.body;
+      const updatedDirectChat =
+        await this.directChatService.updateDirectChatById(id, {
+          sender: user1,
+          receiver: user2,
+          message,
+        } as IDirectChat);
+      res.status(StatusCodes.OK).json(updatedDirectChat);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  async deleteDirectChatById(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const deletedDirectChat =
+        await this.directChatService.deleteDirectChatById(id);
+      res.status(StatusCodes.OK).json(deletedDirectChat);
     } catch (error: unknown) {
       if (error instanceof AppError) {
         res

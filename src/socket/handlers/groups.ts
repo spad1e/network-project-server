@@ -5,9 +5,10 @@ import type {
   InterServerEvents,
   SocketData,
 } from "@/types/socket";
-// import { IChat } from "@/types/groupchat";
 
-export function registerChatHandlers(
+export const onlineUsers = new Map<string, Set<string>>();
+
+export function registerGroupHandlers(
   io: Server<
     ClientToServerEvents,
     ServerToClientEvents,
@@ -23,14 +24,4 @@ export function registerChatHandlers(
 ) {
   const user = socket.data.user.username;
   if (!user) return;
-
-  socket.on("joinGroup", (id: string) => {
-    socket.join(id);
-  });
-  socket.on("leaveGroup", (id: string) => {
-    socket.leave(id);
-  });
-  // socket.on("messageToServer", (data: IChat, room: string) => {
-  //   // socket.to(room).emit("messageToClient", data);
-  // });
 }

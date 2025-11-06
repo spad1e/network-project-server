@@ -1,4 +1,4 @@
-export interface IChat {
+export interface IGroupChat {
   id: string;
   message: string;
   groupId: string;

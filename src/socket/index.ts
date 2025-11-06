@@ -8,6 +8,7 @@ import type {
 import { socketMiddleware } from "@/middleware/socket.middleware";
 import { registerConnectionHandlers } from "@/socket/handlers/connection";
 import { registerChatHandlers } from "@/socket/handlers/chat";
+import { registerGroupHandlers } from "./handlers/groups";
 
 export const initSocket = (
   io: Server<
@@ -21,6 +22,7 @@ export const initSocket = (
 
   io.on("connection", (socket: Socket) => {
     registerConnectionHandlers(io, socket);
+    registerGroupHandlers(io, socket);
     registerChatHandlers(io, socket);
   });
 };

@@ -1,7 +1,7 @@
-import { IChat } from "@/types/chat";
+// import { IChat } from "@/types/groupchat";
 
 export interface ServerToClientEvents {
-  messageToClient: (data: IChat) => void;
+  // messageToClient: (data: IChat) => void;
   onlineUsers: (users: string[]) => void;
   userConnect: (username: string) => void;
   userDisconnect: (username: string) => void;
@@ -10,7 +10,7 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents {
   joinGroup: (id: string) => void;
   leaveGroup: (id: string) => void;
-  messageToServer: (data: IChat, room: string) => void;
+  // messageToServer: (data: IChat, room: string) => void;
 }
 
 export interface InterServerEvents {}

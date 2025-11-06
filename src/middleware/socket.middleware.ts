@@ -17,7 +17,6 @@ export function socketMiddleware(
   next: (err?: Error) => void
 ): void {
   try {
-    console.log(socket.id);
     const token = socket.handshake.headers.cookie
       ?.split("; ")
       .find((c) => c.startsWith("token="))
@@ -29,8 +28,6 @@ export function socketMiddleware(
     }
 
     socket.data.user = jwtData;
-
-    console.log("Socket authenticated:", socket.data.user);
 
     next();
   } catch (error: unknown) {
