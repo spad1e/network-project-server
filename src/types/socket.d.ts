@@ -8,11 +8,10 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  // joinGroup: (id: string) => void;
-  // leaveGroup: (id: string) => void;
+  joinGroup: (id: string) => void;
+  leaveGroup: (id: string) => void;
   groupMessageToServer: (data: IGroupChat, room: string) => void;
   directMessageToServer: (data: IDirectChat, username: string) => void;
-  // messageToServer: (data: IChat, room: string) => void;
 }
 
 export interface InterServerEvents {}

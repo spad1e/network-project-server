@@ -5,10 +5,13 @@ import type {
   InterServerEvents,
   SocketData,
 } from "@/types/socket";
+import { GroupService } from "@/services/group.service";
 
 export const onlineUsers = new Map<string, Set<string>>();
 
-export function registerGroupHandlers(
+const groupService = new GroupService();
+
+export async function registerGroupHandlers(
   io: Server<
     ClientToServerEvents,
     ServerToClientEvents,
@@ -22,6 +25,21 @@ export function registerGroupHandlers(
     SocketData
   >
 ) {
-  const user = socket.data.user.username;
+  const user = socket.data.user;
   if (!user) return;
+  if (!user.username) return;
+
+  const groups = await groupService.getGroupsByUsername(user.username);
+  for (const group of groups) {
+    if (group.id) {
+      socket.join(group.id);
+    }
+  }
+
+  socket.on("joinGroup", (id: string) => {
+    socket.join(id);
+  });
+  socket.on("leaveGroup", (id: string) => {
+    socket.leave(id);
+  });
 }

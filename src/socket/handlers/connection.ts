@@ -5,6 +5,7 @@ import type {
   InterServerEvents,
   SocketData,
 } from "@/types/socket";
+import { IUser } from "@/types/user";
 
 export const onlineUsers = new Map<string, Set<string>>();
 
@@ -22,28 +23,38 @@ export function registerConnectionHandlers(
     SocketData
   >
 ) {
-  const user = socket.data.user.username;
+  const user = socket.data.user;
   if (!user) return;
+  const userString = JSON.stringify(user);
 
-  console.log(`User connected: ${user} (Socket ID: ${socket.id})`);
+  console.log(`User connected: ${userString} (Socket ID: ${socket.id})`);
 
-  if (!onlineUsers.has(user)) {
-    onlineUsers.set(user, new Set());
+  if (!onlineUsers.has(userString)) {
+    onlineUsers.set(userString, new Set());
   }
-  onlineUsers.get(user)!.add(socket.id);
+  onlineUsers.get(userString)!.add(socket.id);
   console.log(onlineUsers);
-  io.emit("onlineUsers", Array.from(onlineUsers.keys()));
+  io.emit(
+    "onlineUsers",
+    Array.from(onlineUsers.keys()).map((u) => JSON.parse(u) as Partial<IUser>)
+  );
 
   socket.on("disconnect", () => {
-    const user = socket.data.user.username;
+    const user = socket.data.user;
     if (!user) return;
+    const userString = JSON.stringify(user);
 
-    const userSockets = onlineUsers.get(user);
+    const userSockets = onlineUsers.get(userString);
     if (userSockets) {
       userSockets.delete(socket.id);
       if (userSockets.size === 0) {
-        onlineUsers.delete(user);
-        io.emit("onlineUsers", Array.from(onlineUsers.keys()));
+        onlineUsers.delete(userString);
+        io.emit(
+          "onlineUsers",
+          Array.from(onlineUsers.keys()).map(
+            (u) => JSON.parse(u) as Partial<IUser>
+          )
+        );
       }
     }
   });
