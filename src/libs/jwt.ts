@@ -2,8 +2,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 import { IJwtData } from "@/types/jwt";
 
-export function signJwt(username: string): string {
-  const payload = { username };
+export function signJwt(username: string, icon_id: number): string {
+  const payload = { username, icon_id };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
     expiresIn: "48h",
@@ -16,5 +16,6 @@ export function verifyJwt(token: string): IJwtData {
     token,
     process.env.JWT_SECRET as string
   ) as JwtPayload;
-  return decoded as IJwtData;
+  const { username, icon_id } = decoded;
+  return { username, icon_id } as IJwtData;
 }

@@ -30,7 +30,7 @@ export class AuthService {
       throw new AppError("Invalid credentials", StatusCodes.UNAUTHORIZED);
     }
 
-    const token = signJwt(username);
+    const token = signJwt(username, user.icon_id);
     return { user, token };
   }
 
