@@ -1,20 +1,22 @@
-// import { IChat } from "@/types/groupchat";
+import { IUser } from "@/types/user";
+import { IGroupChat, IDirectChat } from "@/types/chat";
 
 export interface ServerToClientEvents {
-  // messageToClient: (data: IChat) => void;
-  onlineUsers: (users: string[]) => void;
-  userConnect: (username: string) => void;
-  userDisconnect: (username: string) => void;
+  groupMessageToClient: (data: IGroupChat) => void;
+  directMessageToClient: (data: IDirectChat) => void;
+  onlineUsers: (users: Partial<IUser>[]) => void;
 }
 
 export interface ClientToServerEvents {
-  joinGroup: (id: string) => void;
-  leaveGroup: (id: string) => void;
+  // joinGroup: (id: string) => void;
+  // leaveGroup: (id: string) => void;
+  groupMessageToServer: (data: IGroupChat, room: string) => void;
+  directMessageToServer: (data: IDirectChat, username: string) => void;
   // messageToServer: (data: IChat, room: string) => void;
 }
 
 export interface InterServerEvents {}
 
 export interface SocketData {
-  user: { username: string };
+  user: Partial<IUser>;
 }

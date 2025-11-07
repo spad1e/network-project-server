@@ -2,7 +2,7 @@ import { DirectChatService } from "@/services/directchat.service";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "@/types/error";
 import type { Request, Response } from "express";
-import { IDirectChat } from "@/types/directchat";
+import { IDirectChat } from "@/types/chat";
 
 export class DirectChatController {
   private directChatService: DirectChatService;

@@ -1,5 +1,5 @@
 import { GroupChatRepository } from "@/repositories/groupchat.repository";
-import { IGroupChat } from "@/types/groupchat";
+import { IGroupChat } from "@/types/chat";
 
 export class GroupChatService {
   private groupChatRepository: GroupChatRepository;

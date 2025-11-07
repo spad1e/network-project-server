@@ -1,4 +1,4 @@
-import type { IGroupChat } from "@/types/groupchat";
+import type { IGroupChat } from "@/types/chat";
 import { Prisma } from "@/libs/prisma";
 
 export class GroupChatRepository {

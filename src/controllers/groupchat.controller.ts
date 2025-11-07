@@ -2,7 +2,7 @@ import { GroupChatService } from "@/services/groupchat.service";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "@/types/error";
 import type { Request, Response } from "express";
-import { IGroupChat } from "@/types/groupchat";
+import { IGroupChat } from "@/types/chat";
 
 export class GroupChatController {
   private groupChatService: GroupChatService;

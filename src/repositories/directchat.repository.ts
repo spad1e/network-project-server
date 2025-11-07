@@ -1,4 +1,4 @@
-import type { IDirectChat } from "@/types/directchat";
+import type { IDirectChat } from "@/types/chat";
 import { Prisma } from "@/libs/prisma";
 
 export class DirectChatRepository {

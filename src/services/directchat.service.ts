@@ -1,5 +1,5 @@
 import { DirectChatRepository } from "@/repositories/directchat.repository";
-import { IDirectChat } from "@/types/directchat";
+import { IDirectChat } from "@/types/chat";
 
 export class DirectChatService {
   private directChatRepository: DirectChatRepository;
