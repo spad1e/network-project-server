@@ -181,6 +181,7 @@ export class UserController {
       }
     }
   }
+
   async getTokenUser(req: Request, res: Response): Promise<void> {
     try {
       if (!req.user) {

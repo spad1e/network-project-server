@@ -13,7 +13,15 @@ export class GroupChatController {
 
   async createGroupChat(req: Request, res: Response): Promise<void> {
     try {
-      const { groupId, username, message } = req.body;
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const username = req.user.username;
+      const { groupId, message } = req.body;
       const createdGroupChat = await this.groupChatService.createGroupChat({
         groupId,
         username,

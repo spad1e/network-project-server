@@ -13,7 +13,14 @@ export class DirectChatController {
 
   async createDirectChat(req: Request, res: Response): Promise<void> {
     try {
-      const sender = req.user!.username;
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const sender = req.user.username;
       const { receiver, message } = req.body;
       const createdDirectChat = await this.directChatService.createDirectChat({
         sender,
@@ -57,7 +64,14 @@ export class DirectChatController {
 
   async getDirectChatByUsers(req: Request, res: Response): Promise<void> {
     try {
-      const user1 = req.user!.username;
+      if (!req.user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({
+          success: false,
+          message: "User not authenticated",
+        });
+        return;
+      }
+      const user1 = req.user.username;
       const { user2 } = req.params;
       const directChat = await this.directChatService.getDirectChatByUsers(
         user1,
