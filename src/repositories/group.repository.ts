@@ -1,4 +1,5 @@
 import type { IGroup } from "@/types/group";
+import type { IUser } from "@/types/user";
 import { Prisma } from "@/libs/prisma";
 
 export class GroupRepository {
@@ -37,6 +38,18 @@ export class GroupRepository {
         },
       },
       orderBy: { createdAt: "asc" },
+    });
+  }
+
+  async getGroupMembersById(id: string): Promise<IUser[]> {
+    return await Prisma.user.findMany({
+      where: {
+        groups: {
+          some: {
+            id,
+          },
+        },
+      },
     });
   }
 

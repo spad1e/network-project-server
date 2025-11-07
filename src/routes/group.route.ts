@@ -24,6 +24,10 @@ export class GroupRouter extends BaseRouter {
       this.groupController.getGroupsByUsername.bind(this.groupController)
     );
     this.router.get(
+      "/member/:id",
+      this.groupController.getGroupMembersById.bind(this.groupController)
+    );
+    this.router.get(
       "/:id",
       this.groupController.getGroupById.bind(this.groupController)
     );

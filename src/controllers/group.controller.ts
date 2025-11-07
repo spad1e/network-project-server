@@ -63,6 +63,26 @@ export class GroupController {
     }
   }
 
+  async getGroupMembersById(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const group_members = await this.groupService.getGroupMembersById(id);
+      res.status(StatusCodes.OK).json(group_members);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        res
+          .status(error.statusCode)
+          .json({ success: false, error: error.message });
+        return;
+      } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
   async getGroupById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;

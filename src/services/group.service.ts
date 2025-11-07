@@ -1,5 +1,6 @@
 import { GroupRepository } from "@/repositories/group.repository";
 import type { IGroup } from "@/types/group";
+import type { IUser } from "@/types/user";
 
 export class GroupService {
   private groupRepository: GroupRepository;
@@ -16,6 +17,11 @@ export class GroupService {
   async getGroups(): Promise<IGroup[]> {
     const groups = await this.groupRepository.getGroups();
     return groups;
+  }
+
+  async getGroupMembersById(id: string): Promise<IUser[]> {
+    const group_members = await this.groupRepository.getGroupMembersById(id);
+    return group_members;
   }
 
   async getGroupById(id: string): Promise<IGroup | null> {
