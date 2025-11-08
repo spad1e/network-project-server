@@ -34,7 +34,11 @@ export function registerConnectionHandlers(
   }
   onlineUsers.get(userString)!.add(socket.id);
   console.log(onlineUsers);
-  io.emit(
+  socket.emit(
+    "onlineUsers",
+    Array.from(onlineUsers.keys()).map((u) => JSON.parse(u) as Partial<IUser>)
+  );
+  socket.broadcast.emit(
     "onlineUsers",
     Array.from(onlineUsers.keys()).map((u) => JSON.parse(u) as Partial<IUser>)
   );
