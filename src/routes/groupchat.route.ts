@@ -18,33 +18,33 @@ export class GroupChatRouter extends BaseRouter {
   private setUpRoutes(): void {
     this.router.get(
       "/",
-      this.groupChatController.getGroupChats.bind(this.groupChatController)
+      this.groupChatController.getGroupChats.bind(this.groupChatController),
     );
     this.router.get(
       "/:id",
-      this.groupChatController.getGroupChatById.bind(this.groupChatController)
+      this.groupChatController.getGroupChatById.bind(this.groupChatController),
     );
     this.router.get(
       "/group/:groupId",
       this.groupChatController.getGroupChatsByGroupId.bind(
-        this.groupChatController
-      )
+        this.groupChatController,
+      ),
     );
     this.router.post(
       "/",
-      this.groupChatController.createGroupChat.bind(this.groupChatController)
+      this.groupChatController.createGroupChat.bind(this.groupChatController),
     );
     this.router.put(
       "/:id",
       this.groupChatController.updateGroupChatById.bind(
-        this.groupChatController
-      )
+        this.groupChatController,
+      ),
     );
     this.router.delete(
       "/:id",
       this.groupChatController.deleteGroupChatById.bind(
-        this.groupChatController
-      )
+        this.groupChatController,
+      ),
     );
   }
 }

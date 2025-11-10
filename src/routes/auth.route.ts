@@ -14,15 +14,15 @@ export class AuthRouter extends BaseRouter {
   private setUpRoutes(): void {
     this.router.post(
       "/signup",
-      this.authController.signUp.bind(this.authController)
+      this.authController.signUp.bind(this.authController),
     );
     this.router.post(
       "/signin",
-      this.authController.signIn.bind(this.authController)
+      this.authController.signIn.bind(this.authController),
     );
     this.router.post(
       "/logout",
-      this.authController.logout.bind(this.authController)
+      this.authController.logout.bind(this.authController),
     );
   }
 }

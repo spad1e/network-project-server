@@ -135,7 +135,7 @@ export class GroupController {
       const { id } = req.params;
       const updatedGroup = await this.groupService.updateGroupById(
         id,
-        req.body as IGroup
+        req.body as IGroup,
       );
       res.status(StatusCodes.OK).json(updatedGroup);
     } catch (error: unknown) {

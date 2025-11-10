@@ -75,7 +75,7 @@ export class DirectChatController {
       const { user2 } = req.params;
       const directChat = await this.directChatService.getDirectChatByUsers(
         user1,
-        user2
+        user2,
       );
       res.status(StatusCodes.OK).json(directChat);
     } catch (error: unknown) {

@@ -20,7 +20,7 @@ export class DirectChatRepository {
 
   async getDirectChatsByUsers(
     user1: string,
-    user2: string
+    user2: string,
   ): Promise<IDirectChat[]> {
     return await Prisma.directChat.findMany({
       where: {
@@ -41,7 +41,7 @@ export class DirectChatRepository {
 
   async updateDirectChatById(
     id: string,
-    chat: IDirectChat
+    chat: IDirectChat,
   ): Promise<IDirectChat> {
     return await Prisma.directChat.update({
       where: { id },

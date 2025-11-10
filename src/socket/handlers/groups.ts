@@ -23,7 +23,7 @@ export async function registerGroupHandlers(
     ServerToClientEvents,
     InterServerEvents,
     SocketData
-  >
+  >,
 ) {
   const user = socket.data.user;
   if (!user) return;

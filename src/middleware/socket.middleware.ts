@@ -14,7 +14,7 @@ export function socketMiddleware(
     InterServerEvents,
     SocketData
   >,
-  next: (err?: Error) => void
+  next: (err?: Error) => void,
 ): void {
   try {
     const token = socket.handshake.headers.cookie

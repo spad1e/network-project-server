@@ -81,7 +81,7 @@ export class UserController {
       const username = req.user.username;
       const updatedUser = await this.userService.updateUserByUsername(
         username,
-        req.body as IUser
+        req.body as IUser,
       );
       res.status(StatusCodes.OK).json(updatedUser);
     } catch (error: unknown) {
