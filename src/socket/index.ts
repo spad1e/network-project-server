@@ -16,7 +16,7 @@ export const initSocket = (
     ServerToClientEvents,
     InterServerEvents,
     SocketData
-  >
+  >,
 ) => {
   io.use(socketMiddleware);
 

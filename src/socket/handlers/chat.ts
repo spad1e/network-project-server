@@ -23,7 +23,7 @@ export function registerChatHandlers(
     ServerToClientEvents,
     InterServerEvents,
     SocketData
-  >
+  >,
 ) {
   const user = socket.data.user;
   if (!user) return;
@@ -47,6 +47,6 @@ export function registerChatHandlers(
       for (const socketId of userSocket) {
         socket.to(socketId).emit("directMessageToClient", data);
       }
-    }
+    },
   );
 }

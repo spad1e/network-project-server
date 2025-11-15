@@ -21,7 +21,7 @@ export function registerConnectionHandlers(
     ServerToClientEvents,
     InterServerEvents,
     SocketData
-  >
+  >,
 ) {
   const user = socket.data.user;
   if (!user) return;
@@ -36,11 +36,11 @@ export function registerConnectionHandlers(
   console.log(onlineUsers);
   socket.emit(
     "onlineUsers",
-    Array.from(onlineUsers.keys()).map((u) => JSON.parse(u) as Partial<IUser>)
+    Array.from(onlineUsers.keys()).map((u) => JSON.parse(u) as Partial<IUser>),
   );
   socket.broadcast.emit(
     "onlineUsers",
-    Array.from(onlineUsers.keys()).map((u) => JSON.parse(u) as Partial<IUser>)
+    Array.from(onlineUsers.keys()).map((u) => JSON.parse(u) as Partial<IUser>),
   );
 
   socket.on("disconnect", () => {
@@ -56,8 +56,8 @@ export function registerConnectionHandlers(
         io.emit(
           "onlineUsers",
           Array.from(onlineUsers.keys()).map(
-            (u) => JSON.parse(u) as Partial<IUser>
-          )
+            (u) => JSON.parse(u) as Partial<IUser>,
+          ),
         );
       }
     }

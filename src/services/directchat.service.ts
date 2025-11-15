@@ -9,9 +9,8 @@ export class DirectChatService {
   }
 
   async createDirectChat(body: IDirectChat): Promise<IDirectChat> {
-    const createdDirectChat = await this.directChatRepository.createDirectChat(
-      body
-    );
+    const createdDirectChat =
+      await this.directChatRepository.createDirectChat(body);
     return createdDirectChat;
   }
 
@@ -22,11 +21,11 @@ export class DirectChatService {
 
   async getDirectChatByUsers(
     user1: string,
-    user2: string
+    user2: string,
   ): Promise<IDirectChat[]> {
     const directChats = await this.directChatRepository.getDirectChatsByUsers(
       user1,
-      user2
+      user2,
     );
     return directChats;
   }
@@ -38,7 +37,7 @@ export class DirectChatService {
 
   async updateDirectChatById(
     id: string,
-    body: IDirectChat
+    body: IDirectChat,
   ): Promise<IDirectChat> {
     const updatedDirectChat =
       await this.directChatRepository.updateDirectChatById(id, body);

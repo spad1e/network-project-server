@@ -51,7 +51,7 @@ export class AuthService {
     if (!createUser) {
       throw new AppError(
         "Internal Server Error",
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
     return createUser;

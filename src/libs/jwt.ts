@@ -14,7 +14,7 @@ export function signJwt(username: string, icon_id: number): string {
 export function verifyJwt(token: string): IJwtData {
   const decoded = jwt.verify(
     token,
-    process.env.JWT_SECRET as string
+    process.env.JWT_SECRET as string,
   ) as JwtPayload;
   const { username, icon_id } = decoded;
   return { username, icon_id } as IJwtData;

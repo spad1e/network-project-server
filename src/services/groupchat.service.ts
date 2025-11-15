@@ -19,9 +19,8 @@ export class GroupChatService {
   }
 
   async getGroupChatsByGroupId(groupId: string): Promise<IGroupChat[]> {
-    const chats = await this.groupChatRepository.getGroupChatsByGroupId(
-      groupId
-    );
+    const chats =
+      await this.groupChatRepository.getGroupChatsByGroupId(groupId);
     return chats;
   }
 
@@ -33,7 +32,7 @@ export class GroupChatService {
   async updateGroupChatById(id: string, body: IGroupChat): Promise<IGroupChat> {
     const updatedChat = await this.groupChatRepository.updateGroupChatById(
       id,
-      body
+      body,
     );
     return updatedChat;
   }

@@ -27,15 +27,14 @@ export class UserService {
   async updateUserByUsername(username: string, body: IUser): Promise<IUser> {
     const updatedUser = await this.userRepository.updateUserByUsername(
       username,
-      body
+      body,
     );
     return updatedUser;
   }
 
   async deleteUserByUsername(username: string): Promise<IUser> {
-    const deletedUser = await this.userRepository.deleteUserByUsername(
-      username
-    );
+    const deletedUser =
+      await this.userRepository.deleteUserByUsername(username);
     return deletedUser;
   }
 
